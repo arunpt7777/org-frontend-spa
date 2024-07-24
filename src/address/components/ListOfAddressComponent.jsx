@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { deleteAddressApi, retrieveAllAddressesApi } from "./api/AddressApiService";
+import { deleteAddressApi, retrieveAlladdressesApi } from "./api/AddressApiService";
 import { useAuth } from "../../employee/components/security/AuthContext";
 import { useNavigate } from "react-router-dom";
 
@@ -15,7 +15,7 @@ export default function ListOfAddressesComponent(){
     
     function refreshAddresses(){
 
-        retrieveAllAddressesApi(username)
+        retrieveAlladdressesApi(username)
         .then(response => setAddresses(response.data))
         .catch(error => console.log(error))
     }
