@@ -1,60 +1,56 @@
 import { useNavigate, useParams } from "react-router-dom"
-import { createEmployeeApi, retrieveEmployeeApi, updateEmployeeApi } from "./api/EmployeeApiService"
-import { useAuth } from "./security/AuthContext"
+import { createAddressApi, retrieveAddressApi, updateAddressApi } from "../../address/components/api/AddressApiService.jsx"
+import { useAuth } from "../../employee/components/security/AuthContext.js"
 import { useEffect, useState } from "react"
 import { Field, Formik, Form, ErrorMessage } from "formik"
 import moment from "moment"
 
-export default function EmployeeComponent(){
+export default function AddressComponent(){
     const {id} = useParams()
     const authConext = useAuth()
     const navigate = useNavigate()
     const username = authConext.username;
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
-    const [email, setEmail] = useState('')
-    const [gender, setGender] = useState('')
-    const [age, setAge] = useState('')
-    const [phone, setPhone] = useState('')
+    const [addressLine1, setAddressLine1] = useState('')
+    const [addressLine2, setAddressLine2] = useState('')
+    const [zipCode, setZipCode] = useState('')
+    const [addressType, setAddressType] = useState('')
+    const [employeeId, setEmployeeId] = useState('')
     
-    useEffect( () => retrieveEmployees(), [id] )
+    useEffect( () => retrieveAddress(), [id] )
 
-    function retrieveEmployees() {
+    function retrieveAddress() {
         if(id != -1) {
-                        retrieveEmployeeApi(username, id)
+                        retrieveAddressApi(username, id)
                         .then(response => {
-                            setFirstName(response.data.firstName)
-                            setLastName(response.data.lastName)
-                            setGender(response.data.gender)
-                            setAge(response.data.age)
-                            setEmail(response.data.email)
-                            setPhone(response.data.phone)
+                            setAddressLine1(response.data.addressLine1)
+                            setAddressLine2(response.data.addressLine2)
+                            setZipCode(response.data.zipCode)
+                            setAddressType(response.data.addressType)
+                            setEmployeeId(response.data.employeeId)
                         })
                         .catch(error => console.log(error))
                     }
             }
 
     function onSubmit(values){
-        const employee = {
+        const address = {
                         id: values.id,                       
-                        firstName: values.firstName,
-                        lastName: values.lastName,
-                        gender: values.gender,
-                        age: values.age,
-                        email: values.email,
-                        employeeNumber: values.id, 
-                        phone: values.phone
+                        addressLine1: values.addressLine1,
+                        addressLine2: values.addressLine2,
+                        zipCode: values.zipCode,
+                        addressType: values.addressType,
+                        employeeId: values.employeeId
                     }
 
        if(id == -1) {
-        employee.id = id+1;
-        createEmployeeApi(username, employee)
-        .then(response => navigate('/employees'))
+        address.id = id+1;
+        createAddressApi(username, address)
+        .then(response => navigate('/addresses'))
         .catch(error => console.log(error))
        }
        else {
-        updateEmployeeApi(username, id, employee)
-        .then(response => navigate('/employees'))
+        updateAddressApi(username, id, address)
+        .then(response => navigate('/addresses'))
         .catch(error => console.log(error))
        }
     }
@@ -62,67 +58,55 @@ export default function EmployeeComponent(){
     function validate(values){
 
         let errors = {
-          /*
-            firstName: 'Enter a First name',
-           lastName: 'Enter a Last name',
-           age: 'Enter a valid age (between 18 and 80)',
-           email: 'Enter a valid Email'
-           */
+
         }
-        if(values.firstName.length<1) {errors.firstName = 'First name is mandatory';}
-        if(values.lastName.length<1) {errors.lastName = 'Last name is mandatory';}
-       // if(values.gender==='Male' || values.gender==='Female' || values.gender==='Other') {errors.gender = 'Gender should be Male/Female/Other';}
-        if(values.age<18 || values.age>80) {errors.age = 'Age should be between 18 and 80 years';}
-        if(values.email.length<1) {errors.email = 'Email is mandatory';}
-        if(/^\d+$/.test(phone)) {errors.phone = 'Phone number must contain only digits';}
+        if(values.addressLine1.length<1) {errors.addressLine1 = 'Address Line 1 is mandatory';}
+        if(values.addressLine2.length<1) {errors.addressLine2 = 'Address Line 2 is mandatory';}
+        if(/^\d+$/.test(zipCode)) {errors.zipCode = 'Zip Code must contain only digits';}
+        if(values.addressType.length<1) {errors.addressType = 'Address Type is mandatory';}
+        if(values.employeeId.length<1) {errors.employeeId = 'Employee Id is mandatory';}
 
         return errors
     }
 
     return (
         <div className="container">
-            <h1>Enter Employee Details</h1>
+            <h1>Enter Address Details</h1>
             <div> 
-                <Formik initialValues={ {firstName, lastName, gender, age, email, phone} } enableReinitialize={true} 
+                <Formik initialValues={ {addressLine1, addressLine2, zipCode, addressType, employeeId } } enableReinitialize={true} 
                 onSubmit={onSubmit} validate={validate} validateOnBlur={false} validateOnChange={false} >
                     {
                         (props) => (
                         <Form > 
-                            <ErrorMessage name="firstName" component="div" className="alert alert-warning" />
-                            <ErrorMessage name="lastName" component="div" className="alert alert-warning" />
-                            <ErrorMessage name="gender" component="div" className="alert alert-warning" />
-                            <ErrorMessage name="age" component="div" className="alert alert-warning" />
-                            <ErrorMessage name="email" component="div" className="alert alert-warning" />
-                            <ErrorMessage name="phone" component="div" className="alert alert-warning" />
+                            <ErrorMessage name="addressLine1" component="div" className="alert alert-warning" />
+                            <ErrorMessage name="addressLine2" component="div" className="alert alert-warning" />
+                            <ErrorMessage name="zipCode" component="div" className="alert alert-warning" />
+                            <ErrorMessage name="addressType" component="div" className="alert alert-warning" />
+                            <ErrorMessage name="employeeId" component="div" className="alert alert-warning" />
                             
                             <fieldset className="form-group">
-                                <label> First Name </label>
-                                    <Field type="text" className="form-control" name="firstName" />
+                                <label> Address Line1 </label>
+                                    <Field type="text" className="form-control" name="addressLine1" />
                             </fieldset>
 
                             <fieldset className="form-group">
-                                <label> Last Name</label>
-                                <Field type="text" className="form-control" name="lastName" />
+                                <label> Address Line2 </label>
+                                <Field type="text" className="form-control" name="addressLine2" />
                             </fieldset>
 
                             <fieldset className="form-group">
-                                <label> Gender </label>
-                                <Field type="text" className="form-control" name="gender" />
+                                <label> Zip Code </label>
+                                <Field type="text" className="form-control" name="zipCode" />
                             </fieldset>
 
                             <fieldset className="form-group">
-                                <label> Age </label>
-                                <Field type="text" className="form-control" name="age" />
+                                <label> Address Type </label>
+                                <Field type="text" className="form-control" name="addressType" />
                             </fieldset>
 
                             <fieldset className="form-group">
-                                <label> Email </label>
-                                <Field type="text" className="form-control" name="email" />
-                            </fieldset>
-
-                            <fieldset className="form-group">
-                                <label> Phone </label>
-                                <Field type="text" className="form-control" name="phone" />
+                                <label> Employee ID </label>
+                                <Field type="text" className="form-control" name="employeeId" />
                             </fieldset>
 
                         <div> <button className="btn btn-success m-5" type="submit"> Save </button> </div>

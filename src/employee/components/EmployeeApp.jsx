@@ -5,13 +5,15 @@ import LogoutComponent from './LogoutComponent.jsx';
 import HeaderComponent from './HeaderComponent.jsx';
 import ListOfEmployeesComponent from './ListOfEmployeesComponent.jsx';
 import ListOfAddressComponent from '../../address/components/ListOfAddressComponent.jsx';
+import ListOfSchemesComponent from '../../scheme/components/ListOfSchemesComponent.jsx';
 import ErrorComponent from './ErrorComponent.jsx';
 import WelcomeComponent from './WelcomeComponent.jsx';
 import LoginComponent from './LoginComponent.jsx';
 import AuthProvider, { useAuth } from './security/AuthContext.js';
 import FooterComponent from './FooterComponent.jsx';
 import EmployeeComponent from './EmployeeComponent.jsx';
-
+import AddressComponent from '../../address/components/AddressComponent.jsx';
+import SchemeComponent from '../../scheme/components/SchemeComponent.jsx';
 
 function AuthenticatedRoute({children}) {
     const authContext  = useAuth();
@@ -30,15 +32,18 @@ export default function EmployeeApp(){
                 <Routes>
                     <Route path='/' element={<LoginComponent/>} />
                     <Route path='/login' element={<LoginComponent/>} />
-                    
-                    <Route path='/welcome/:username' element={ <AuthenticatedRoute> <WelcomeComponent/> </AuthenticatedRoute> } />
-                    
-                    <Route path='*' element={ <ErrorComponent/> } />
-                    <Route path='/employees' element={ <AuthenticatedRoute> <ListOfEmployeesComponent/> </AuthenticatedRoute> } />
                     <Route path='/logout' element={ <AuthenticatedRoute> <LogoutComponent/> </AuthenticatedRoute> } />
+                    <Route path='/welcome/:username' element={ <AuthenticatedRoute> <WelcomeComponent/> </AuthenticatedRoute> } />
+                    <Route path='*' element={ <ErrorComponent/> } />
+
+                    <Route path='/employees' element={ <AuthenticatedRoute> <ListOfEmployeesComponent/> </AuthenticatedRoute> } />
                     <Route path='/employees/:id' element={ <EmployeeComponent/> } />
 
                     <Route path='/addresses' element={ <AuthenticatedRoute> <ListOfAddressComponent/> </AuthenticatedRoute> } />
+                    <Route path='/addresses/:id' element={ <AddressComponent/> } />
+
+                    <Route path='/schemes' element={ <AuthenticatedRoute> <ListOfSchemesComponent/> </AuthenticatedRoute> } />
+                    <Route path='/schemes/:id' element={ <SchemeComponent/> } />
                 </Routes>
             </BrowserRouter>
         </AuthProvider>
