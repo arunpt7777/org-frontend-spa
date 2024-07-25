@@ -28,6 +28,7 @@ export default function WelcomeComponent(){
         <div>Manage Your Employees here: <Link to='/employees'>Click Here</Link> </div>
         <div>Manage Your Addresses here: <Link to='/addresses'>Click Here</Link> </div>
         <div>Manage Your Schemes here: <Link to='/schemes'>Click Here</Link> </div>
+        <div>Manage Your Employee-Scheme Associations here: <Link to='/associations'>Click Here</Link> </div>
         <div className='text-info'> {message} </div>
     </div>
     )
