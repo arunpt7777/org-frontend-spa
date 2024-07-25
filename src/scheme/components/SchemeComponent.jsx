@@ -4,6 +4,7 @@ import { useAuth } from "./security/AuthContext"
 import { useEffect, useState } from "react"
 import { Field, Formik, Form, ErrorMessage } from "formik"
 import moment from "moment"
+import MultiSelect from './MultiSelect';
 
 export default function SchemeComponent(){
     const {id} = useParams()
@@ -63,7 +64,7 @@ export default function SchemeComponent(){
         }
         if(values.name.length<1) {errors.firstName = 'Scheme name is mandatory';}
         if(values.validFromDate.length<1) {errors.validFromDate = 'Valid From Date is mandatory';}
-        if(values.validToDate.length<1) {errors.validToDate = 'Valid To Date is mandatory';}
+        if(values.validToDate.length<1 || moment(values.validToDate).isBefore(moment(values.validFromDate)) ) {errors.validToDate = 'Invalid Date Range! From Date should be before To Date!';}
         if(values.schemeAmount<0) {errors.schemeAmount = 'Scheme Amount should be greater than zero';}
         if(values.schemeType.length<1) {errors.schemeType = 'Scheme Type is mandatory';}
         return errors
@@ -91,14 +92,14 @@ export default function SchemeComponent(){
 
                             <fieldset className="form-group">
                                 <label> Valid From Date: </label>
-                                <Field type="text" className="form-control" name="validFromDate" />
+                                <Field type="date" className="form-control" name="validFromDate" />
                             </fieldset>
 
                             <fieldset className="form-group">
                                 <label> Valid To Date: </label>
-                                <Field type="text" className="form-control" name="validToDate" />
+                                <Field type="date" className="form-control" name="validToDate" />
                             </fieldset>
-
+                            
                             <fieldset className="form-group">
                                 <label> Scheme Amount </label>
                                 <Field type="text" className="form-control" name="schemeAmount" />
@@ -106,7 +107,8 @@ export default function SchemeComponent(){
 
                             <fieldset className="form-group">
                                 <label> Scheme Type </label>
-                                <Field type="text" className="form-control" name="schemeType" />
+                                <Field name="schemeType"  id="singleSelectCustom" placeholder="Single Select" isMulti={false} component={MultiSelect} 
+                                options={[ { value: 'ANNUAL', label: 'ANNUAL' }, { value: 'QUARTERLY', label: 'QUARTERLY' }, { value: 'MONTHLY', label: 'MONTHLY' },  ]} />
                             </fieldset>
 
                         <div> <button className="btn btn-success m-5" type="submit"> Save </button> </div>
