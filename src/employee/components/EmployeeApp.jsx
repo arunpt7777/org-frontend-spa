@@ -6,6 +6,7 @@ import HeaderComponent from './HeaderComponent.jsx';
 import ListOfEmployeesComponent from './ListOfEmployeesComponent.jsx';
 import ListOfAddressComponent from '../../address/components/ListOfAddressComponent.jsx';
 import ListOfSchemesComponent from '../../scheme/components/ListOfSchemesComponent.jsx';
+import ListOfAssociationsComponent from '../../association/components/ListOfAssociationsComponent.jsx';
 import ErrorComponent from './ErrorComponent.jsx';
 import WelcomeComponent from './WelcomeComponent.jsx';
 import LoginComponent from './LoginComponent.jsx';
@@ -14,6 +15,8 @@ import FooterComponent from './FooterComponent.jsx';
 import EmployeeComponent from './EmployeeComponent.jsx';
 import AddressComponent from '../../address/components/AddressComponent.jsx';
 import SchemeComponent from '../../scheme/components/SchemeComponent.jsx';
+import AssociationComponent from '../../association/components/AssociationComponent.jsx';
+
 
 function AuthenticatedRoute({children}) {
     const authContext  = useAuth();
@@ -44,6 +47,10 @@ export default function EmployeeApp(){
 
                     <Route path='/schemes' element={ <AuthenticatedRoute> <ListOfSchemesComponent/> </AuthenticatedRoute> } />
                     <Route path='/schemes/:id' element={ <SchemeComponent/> } />
+
+                    <Route path='/associations' element={ <AuthenticatedRoute> <ListOfAssociationsComponent/> </AuthenticatedRoute> } />
+                    <Route path='/associations/:id' element={ <AssociationComponent/> } />
+
                 </Routes>
             </BrowserRouter>
         </AuthProvider>
